@@ -8,13 +8,13 @@ typedef struct{
 
 palavras ler3palavras(){
     palavras palavras;
-    printf("digite a letra 1 \n");
+    printf("digite a palavra 1 \n");
     fgets(palavras._1, 30, stdin);
 
-    printf("digite a letra 2 \n");
+    printf("digite a palavra 2 \n");
     fgets(palavras._2, 30, stdin);
 
-    printf("digite a letra 3 \n");
+    printf("digite a palavra 3 \n");
     fgets(palavras._3, 30, stdin);
 
     return palavras;
