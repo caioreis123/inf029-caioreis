@@ -53,14 +53,8 @@ O projeto é um protótipo de um sistema para uma escola o qual possibilitará g
 
 ├───README.md<br/>
 ├───programa.c<br/>
-├───db /\* para arquivos de dados usados na aplicação \*/<br/>
 ├───include /\* *para arquivos de cabeçalho (.h)* \*/<br/>
-├───obj /\* *para arquivos objeto (.o) resultantes de compilação* \*/<br/>
 └───src /\* *para arquivos de recurso (bibliotecas, etc)*  \*/<br/>
 
 ### Compilar e executar
-#### Windows
-	Para compilar e executar, caso esteja usando o MinGW, basta processar o comando "gcc programa.c -o obj/programa", para executar "programa" no terminal.
-
-#### Linux
-	Para compilar execute o comando "gcc programa.c -o obj/programa", para executar "./programa".
+	Para compilar execute o comando "gcc programa.c -o programa", para executar "./programa".
