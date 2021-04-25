@@ -29,11 +29,10 @@ void insereElemento(int posicaoDoVetorPrincipal, int elemento, EstruturaAuxiliar
             vetorAuxiliar[i] = -1;
         }
         vetorAuxiliar[0] = elemento;
-        int *ponteiroAuxiliar = vetorAuxiliar;
 
         estruturaAuxiliar.tamanho = tamanho;
         estruturaAuxiliar.indiceAtual = 1;
-        estruturaAuxiliar.ponteiroParaOVetorAuxiliar = ponteiroAuxiliar;
+        estruturaAuxiliar.ponteiroParaOVetorAuxiliar = vetorAuxiliar;
 
         vetorPrincipal[posicaoDoVetorPrincipal]=estruturaAuxiliar;
     }
@@ -59,9 +58,12 @@ void listarVetoresAuxiliares(EstruturaAuxiliar vetorPrincipal[]) {
         int quantidadeDeElementos = vetorPrincipal[indiceDoVetorPrincipal].tamanho;
         printf("a posição %d tem %d espaços \n", indiceDoVetorPrincipal, quantidadeDeElementos);
         for(int indiceDoVetorAuxiliar = 0; indiceDoVetorAuxiliar < quantidadeDeElementos; indiceDoVetorAuxiliar++){
-            int *valorInserido = &vetorPrincipal[indiceDoVetorPrincipal].ponteiroParaOVetorAuxiliar[indiceDoVetorAuxiliar];
-            if(*valorInserido >-1){
-                printf("valores contidos na posição %d: %d \n", indiceDoVetorPrincipal, *valorInserido);
+//            int *valorInserido = &vetorPrincipal[indiceDoVetorPrincipal].ponteiroParaOVetorAuxiliar[indiceDoVetorAuxiliar];
+            EstruturaAuxiliar estruturaAux = vetorPrincipal[indiceDoVetorPrincipal];
+            int point = *estruturaAux.ponteiroParaOVetorAuxiliar;
+            int valorInserido = point;
+            if(valorInserido >-1){
+                printf("valores contidos na posição %d: %d \n", indiceDoVetorPrincipal, valorInserido);
             }
         }
     }
@@ -70,8 +72,8 @@ void listarVetoresAuxiliares(EstruturaAuxiliar vetorPrincipal[]) {
 EstruturaAuxiliar criaEstruturaAuxiliarInicial() {
     EstruturaAuxiliar estruturaAuxiliarInicial;
     estruturaAuxiliarInicial.tamanho = 0;
-    estruturaAuxiliarInicial.ponteiroParaOVetorAuxiliar = 0;
     estruturaAuxiliarInicial.indiceAtual = 0;
+    estruturaAuxiliarInicial.ponteiroParaOVetorAuxiliar = NULL;
     return estruturaAuxiliarInicial;
 }
 
@@ -89,31 +91,23 @@ int identificaElementoASerInserido() {
     return elemento;
 }
 
-//char verificaNovaInsercao() {
-//    char opcao;
-//    printf("Deseja inserir novo elemento? [s/n]\n");
-//    getchar();
-//    scanf("%c", &opcao);
-//    return opcao;
-//}
-
-void menuDeAdicao(EstruturaAuxiliar *vetorPrincipal) {
-//    char continua = 's';
-//    while (continua == 's'){
-        int posicaoDoVetorPrincipal = identificaPosicaoDoVetorPrincipal();
-        int elemento = identificaElementoASerInserido();
-        insereElemento(posicaoDoVetorPrincipal, elemento, vetorPrincipal);
-//        printf("Deseja inserir novo elemento? [s/n]\n");
-//        getchar();
-//        scanf("%c", &continua);
-//    }
+int menuDeAdicao(EstruturaAuxiliar *vetorPrincipal) {
+    int posicaoDoVetorPrincipal = identificaPosicaoDoVetorPrincipal();
+    int elemento = identificaElementoASerInserido();
+    insereElemento(posicaoDoVetorPrincipal, elemento, vetorPrincipal);
+//    int retorno;
+//    scanf("%d", &retorno);
+    return 0;
 }
 
 int main(){
     // declara um array de tamanho 10 cujo valor em cada índice é um ponteiro de valor 0
     EstruturaAuxiliar estruturaAuxiliarInicial = criaEstruturaAuxiliarInicial();
     EstruturaAuxiliar vetorPrincipal[TAM] = {estruturaAuxiliarInicial, estruturaAuxiliarInicial};
-    menuDeAdicao(vetorPrincipal);
+    int continua = 1;
+    while(continua){
+        continua = menuDeAdicao(vetorPrincipal);
+    }
     listarVetoresAuxiliares(vetorPrincipal);
     return 42;
 }
