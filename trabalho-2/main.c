@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define TAM 3
+#include <langinfo.h>
+
+#define TAM 2
 
 typedef struct {
     int tamanho;
@@ -57,9 +59,9 @@ void listarVetoresAuxiliares(EstruturaAuxiliar vetorPrincipal[]) {
         int quantidadeDeElementos = vetorPrincipal[indiceDoVetorPrincipal].tamanho;
         printf("a posição %d tem %d espaços \n", indiceDoVetorPrincipal, quantidadeDeElementos);
         for(int indiceDoVetorAuxiliar = 0; indiceDoVetorAuxiliar < quantidadeDeElementos; indiceDoVetorAuxiliar++){
-            int valorInserido = vetorPrincipal[indiceDoVetorPrincipal].ponteiroParaOVetorAuxiliar[indiceDoVetorAuxiliar];
-            if(valorInserido >-1){
-                printf("valores contidos na posição %d: %d \n", indiceDoVetorPrincipal, valorInserido);
+            int *valorInserido = &vetorPrincipal[indiceDoVetorPrincipal].ponteiroParaOVetorAuxiliar[indiceDoVetorAuxiliar];
+            if(*valorInserido >-1){
+                printf("valores contidos na posição %d: %d \n", indiceDoVetorPrincipal, *valorInserido);
             }
         }
     }
@@ -110,7 +112,7 @@ void menuDeAdicao(EstruturaAuxiliar *vetorPrincipal) {
 int main(){
     // declara um array de tamanho 10 cujo valor em cada índice é um ponteiro de valor 0
     EstruturaAuxiliar estruturaAuxiliarInicial = criaEstruturaAuxiliarInicial();
-    EstruturaAuxiliar vetorPrincipal[TAM] = {estruturaAuxiliarInicial, estruturaAuxiliarInicial, estruturaAuxiliarInicial};
+    EstruturaAuxiliar vetorPrincipal[TAM] = {estruturaAuxiliarInicial, estruturaAuxiliarInicial};
     menuDeAdicao(vetorPrincipal);
     listarVetoresAuxiliares(vetorPrincipal);
     return 42;
