@@ -113,18 +113,56 @@ void aumentarTamanhoDeSecundaria() {
     estruturaPrimaria[indicePrincipal].tamanho = novoTamanho;
 }
 
-void ordenaVetor(int *vetor) {
+int posicionaPivot(int *vetor, int inicio, int fim) {
+    //quicksort - Lomuto
+    //pegamos o primeiro elemento, mas podemos pegar a mediana para ser mais eficiente
+    int pivot = vetor[inicio];
+    int indiceASerTrocado = inicio;
+    for (int indiceASerAnalisado = inicio + 1; indiceASerAnalisado <= fim; indiceASerAnalisado++) {
+        if (vetor[indiceASerAnalisado] < pivot) {
+            indiceASerTrocado++;
+            int aux = vetor[indiceASerTrocado];
+            vetor[indiceASerTrocado] = vetor[indiceASerAnalisado];
+            vetor[indiceASerAnalisado] = aux;
+        }
+    }
+    vetor[inicio] = vetor[indiceASerTrocado];
+    vetor[indiceASerTrocado] = pivot;
+    return indiceASerTrocado;
+}
 
+//    for(int indice = inicio+1; indice<=fim;indice++){
+//        if(vetor[indice] <= pivot){
+//            int aux = vetor[indice];
+//            indicePivot++;
+//            vetor[indice]=pivot;
+//            vetor[indicePivot]=aux;
+//        }
+//    }
+//    return indicePivot;
+
+void ordenaVetor(int *vetor, int inicio, int fim) {
+    if(inicio<fim){
+        int indicePivot = posicionaPivot(vetor, inicio, fim);
+        ordenaVetor(vetor, inicio, indicePivot);
+        ordenaVetor(vetor, indicePivot+1, fim);
+    }
 }
 
 void ordenarSecundaria() {
     int indicePrimaria;
     printf("Qual estrutura secundaria voce deseja ordenar?\n");
     scanf("%d", &indicePrimaria);
-    ordenaVetor(estruturaPrimaria[indicePrimaria].lista);
+    ordenaVetor(estruturaPrimaria[indicePrimaria].lista, 0, estruturaPrimaria[indicePrimaria].tamanho);
 }
 
 int main(){
+//    teste de quicksort:
+    int vetor[10] = {3,8,7,10,0,23,2,1,77,7};
+    ordenaVetor(vetor, 0, 9);
+    for(int i=0;i<10;i++)
+        printf("%d, ", vetor[i]);
+    return 0;
     int sair = 0;
     int escolha;
     while (!sair){
