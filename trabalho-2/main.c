@@ -1,118 +1,161 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <langinfo.h>
+#include <stdbool.h>
+#include <malloc.h>
 
-#define TAM 2
-
-typedef struct {
+#define TAM 3
+typedef struct s{
+    int *lista;
     int tamanho;
-    int indiceAtual;
-    int *ponteiroParaOVetorAuxiliar;
-}EstruturaAuxiliar;
+    int qtdInseridos;
+} EstruturaSecundaria;
 
-int perguntaTamanhoDaEstruturaAuxiliar(){
-    int tamanho;
-    printf("Nao ha estrutura auxiliar criada para essa posicao. Deseja cria-la com que tamanho? \n");
-    scanf("%d", &tamanho);
-    return tamanho;
+typedef struct no {
+    int valor;
+    struct no *proximoNo;
+} No;
+
+EstruturaSecundaria estruturaPrimaria[TAM];
+
+int menu(){
+    int escolha;
+    printf("\nO que deseja?\n");
+    printf("0 - Sair\n");
+    printf("1 - Inserir elemento em determinada estrutura\n");
+    printf("2 - Listar tamanho e elementos de todas estruturas\n");
+    printf("3 - Excluir elemento de determinada estrutura\n");
+    printf("4 - Aumentar tamanho de determinada estrutura\n");
+    printf("5 - Listar ordenadamente os elementos de determinada estrutura\n");
+    printf("6 - Listar ordenadamente todos os elementos de todas estruturas\n");
+    scanf("%d", &escolha);
+    return escolha;
 }
 
-void insereElemento(int posicaoDoVetorPrincipal, int elemento, EstruturaAuxiliar vetorPrincipal[]){
-    // verifica se já há vetor auxiliar naquele índice da estrutura principal
-    if (vetorPrincipal[posicaoDoVetorPrincipal].tamanho == 0){
-        // cria e preenche a estrutura auxiliar
-        EstruturaAuxiliar estruturaAuxiliar;
-        int tamanho = perguntaTamanhoDaEstruturaAuxiliar();
-        int vetorAuxiliar[tamanho];
-        for (int i = 0; i < tamanho; ++i) {
-            vetorAuxiliar[i] = -1;
-        }
-        vetorAuxiliar[0] = elemento;
-
-        estruturaAuxiliar.tamanho = tamanho;
-        estruturaAuxiliar.indiceAtual = 1;
-        estruturaAuxiliar.ponteiroParaOVetorAuxiliar = vetorAuxiliar;
-
-        vetorPrincipal[posicaoDoVetorPrincipal]=estruturaAuxiliar;
-    }
-    //descomentar para possibilitar a adição em vetores auxiliares já criados:
-//    else{
-//        //crio uma variável do vetor auxiliar para facilitar seu acesso
-//        EstruturaAuxiliar *estruturaAux = &vetorPrincipal[posicaoDoVetorPrincipal];
-//
-//        //verifico se há espaço para adições no vetor auxiliar
-//        if (estruturaAux->tamanho == estruturaAux->indiceAtual){
-//            printf("Esse vetor auxiliar nao comporta mais adições\n");
-//        }
-//        else{
-//            // adiciono o novo elemento no índice do vetor auxiliar e incremento ele para a pŕoxima adição
-//            estruturaAux->ponteiroParaOVetorAuxiliar[estruturaAux->indiceAtual++] = elemento;
-//        }
-//    }
-
+int pegaValor() {
+    int info;
+    printf("Informe um valor : ");
+    scanf("%i", &info);
+    return info;
 }
 
-void listarVetoresAuxiliares(EstruturaAuxiliar vetorPrincipal[]) {
-    for (int indiceDoVetorPrincipal = 0; indiceDoVetorPrincipal < TAM; ++indiceDoVetorPrincipal) {
-        int quantidadeDeElementos = vetorPrincipal[indiceDoVetorPrincipal].tamanho;
-        printf("a posição %d tem %d espaços \n", indiceDoVetorPrincipal, quantidadeDeElementos);
-        for(int indiceDoVetorAuxiliar = 0; indiceDoVetorAuxiliar < quantidadeDeElementos; indiceDoVetorAuxiliar++){
-//            int *valorInserido = &vetorPrincipal[indiceDoVetorPrincipal].ponteiroParaOVetorAuxiliar[indiceDoVetorAuxiliar];
-            EstruturaAuxiliar estruturaAux = vetorPrincipal[indiceDoVetorPrincipal];
-            int point = *estruturaAux.ponteiroParaOVetorAuxiliar;
-            int valorInserido = point;
-            if(valorInserido >-1){
-                printf("valores contidos na posição %d: %d \n", indiceDoVetorPrincipal, valorInserido);
-            }
-        }
-    }
+int pegaPosicao() {
+    int pos;
+    printf("Informe a posicao do vetor principal em que será inserido o valor: ");
+    scanf("%i", &pos);
+    return pos;
 }
 
-EstruturaAuxiliar criaEstruturaAuxiliarInicial() {
-    EstruturaAuxiliar estruturaAuxiliarInicial;
-    estruturaAuxiliarInicial.tamanho = 0;
-    estruturaAuxiliarInicial.indiceAtual = 0;
-    estruturaAuxiliarInicial.ponteiroParaOVetorAuxiliar = NULL;
-    return estruturaAuxiliarInicial;
-}
-
-int identificaPosicaoDoVetorPrincipal() {
-    int posicao;
-    printf("Em que posição deseja adicionar?\n");
-    scanf("%d", &posicao);
-    return posicao;
-}
-
-int identificaElementoASerInserido() {
-    int elemento;
-    printf("Que elemento deseja adicionar?\n");
-    scanf("%d", &elemento);
-    return elemento;
-}
-
-int menuDeAdicao(EstruturaAuxiliar *vetorPrincipal) {
-    int posicaoDoVetorPrincipal = identificaPosicaoDoVetorPrincipal();
-    int elemento = identificaElementoASerInserido();
-    insereElemento(posicaoDoVetorPrincipal, elemento, vetorPrincipal);
-//    int retorno;
-//    scanf("%d", &retorno);
+int validarPosicao(int posicao) {
+    if ((posicao>0) && (posicao<=TAM)) return 1;
     return 0;
 }
 
-int main(){
-    // declara um array de tamanho 10 cujo valor em cada índice é um ponteiro de valor 0
-    EstruturaAuxiliar estruturaAuxiliarInicial = criaEstruturaAuxiliarInicial();
-    EstruturaAuxiliar vetorPrincipal[TAM] = {estruturaAuxiliarInicial, estruturaAuxiliarInicial};
-    int continua = 1;
-    while(continua){
-        continua = menuDeAdicao(vetorPrincipal);
-    }
-    listarVetoresAuxiliares(vetorPrincipal);
-    return 42;
+void criaEstruturaSecundaria(int posicao) {
+    int tamanho;
+    printf("Deseja criar estrutura secundaria com que tamanho?\n");
+    scanf("%d", &tamanho);
+    estruturaPrimaria[posicao].lista = (int*) malloc(tamanho*sizeof(int));
+    estruturaPrimaria[posicao].tamanho = tamanho;
+    estruturaPrimaria[posicao].qtdInseridos = 0;
 }
 
-//
-// Created by caio on 4/25/21.
-//
+void inserirElementos() {
+    int valor = pegaValor();
+    int posicao = pegaPosicao();
+    int qtdInseridos;
+    if(estruturaPrimaria[posicao].lista == NULL){
+        criaEstruturaSecundaria(posicao);
+    }
+    qtdInseridos = estruturaPrimaria[posicao].qtdInseridos;
+    estruturaPrimaria[posicao].lista[qtdInseridos] = valor;
+    estruturaPrimaria[posicao].qtdInseridos = qtdInseridos+1;
+}
 
+void listarTodasSecundarias() {
+    for(int i=0;i<TAM;i++){
+        int qtdInseridos = estruturaPrimaria[i].qtdInseridos;
+        int *listaAuxiliar = estruturaPrimaria[i].lista;
+        int tamanhoDaLista = estruturaPrimaria[i].tamanho;
+        printf("Na posicao %d temos %i elementos, sendo eles:", i, tamanhoDaLista);
+        for(int j=0;j<qtdInseridos;j++){
+            int elemento = listaAuxiliar[j];
+            if(elemento!=0){
+                printf("%i ", elemento);
+            }
+        }
+        printf("\n");
+    }
+}
+
+void removerElemento() {
+    int indicePrincipal;
+    int elementoASerRemovido;
+    printf("Qual índice do vetor principal deseja acessar?\n");
+    scanf("%d", &indicePrincipal);
+    printf("Qual elemento deseja remover?\n");
+    scanf("%d", &elementoASerRemovido);
+    int tamanhoDaAuxiliar = estruturaPrimaria[indicePrincipal].tamanho;
+    for(int i=0;i<tamanhoDaAuxiliar;i++){
+        int elementoAtual = estruturaPrimaria[indicePrincipal].lista[i];
+        if(elementoAtual==elementoASerRemovido){
+            estruturaPrimaria[indicePrincipal].lista[i] = 0;
+        }
+    }
+}
+
+void aumentarTamanhoDeSecundaria() {
+    int indicePrincipal;
+    int novoTamanho;
+    printf("Qual índice do vetor principal deseja aumentar?\n");
+    scanf("%d", &indicePrincipal);
+    printf("Qual o novo tamanho?\n");
+    scanf("%d", &novoTamanho);
+    estruturaPrimaria[indicePrincipal].lista = (int*) realloc(estruturaPrimaria[indicePrincipal].lista, novoTamanho*sizeof(int));
+    estruturaPrimaria[indicePrincipal].tamanho = novoTamanho;
+}
+
+void ordenaVetor(int *vetor) {
+
+}
+
+void ordenarSecundaria() {
+    int indicePrimaria;
+    printf("Qual estrutura secundaria voce deseja ordenar?\n");
+    scanf("%d", &indicePrimaria);
+    ordenaVetor(estruturaPrimaria[indicePrimaria].lista);
+}
+
+int main(){
+    int sair = 0;
+    int escolha;
+    while (!sair){
+        escolha = menu();
+        switch (escolha){
+            case 0:{
+                printf("vc saiu!");
+                sair = 1;
+                break;
+            }
+            case 1:{
+                inserirElementos();
+                break;
+            }
+            case 2:{
+                listarTodasSecundarias();
+                break;
+            }
+            case 3:{
+                removerElemento();
+                break;
+            }
+            case 4:{
+                aumentarTamanhoDeSecundaria();
+                break;
+            }
+            case 5:{
+                ordenarSecundaria();
+                break;
+            }
+        }
+    }
+
+}
