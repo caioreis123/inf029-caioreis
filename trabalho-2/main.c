@@ -1,18 +1,12 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <malloc.h>
 
-#define TAM 3
+#define TAM 10
 typedef struct s{
     int *lista;
     int tamanho;
     int qtdInseridos;
 } EstruturaSecundaria;
-
-typedef struct no {
-    int valor;
-    struct no *proximoNo;
-} No;
 
 EstruturaSecundaria estruturaPrimaria[TAM];
 
@@ -131,16 +125,6 @@ int posicionaPivot(int *vetor, int inicio, int fim) {
     return indiceASerTrocado;
 }
 
-//    for(int indice = inicio+1; indice<=fim;indice++){
-//        if(vetor[indice] <= pivot){
-//            int aux = vetor[indice];
-//            indicePivot++;
-//            vetor[indice]=pivot;
-//            vetor[indicePivot]=aux;
-//        }
-//    }
-//    return indicePivot;
-
 void ordenaVetor(int *vetor, int inicio, int fim) {
     if(inicio<fim){
         int indicePivot = posicionaPivot(vetor, inicio, fim);
@@ -156,20 +140,22 @@ void ordenarSecundaria() {
     ordenaVetor(estruturaPrimaria[indicePrimaria].lista, 0, estruturaPrimaria[indicePrimaria].tamanho);
 }
 
+void ordenarTodosSecundarios() {
+    for(int indicePrimario = 0; indicePrimario<TAM;indicePrimario++){
+        if(estruturaPrimaria[indicePrimario].lista !=NULL){
+            ordenaVetor(estruturaPrimaria[indicePrimario].lista, 0, estruturaPrimaria[indicePrimario].tamanho);
+        }
+    }
+}
+
 int main(){
-//    teste de quicksort:
-    int vetor[10] = {3,8,7,10,0,23,2,1,77,7};
-    ordenaVetor(vetor, 0, 9);
-    for(int i=0;i<10;i++)
-        printf("%d, ", vetor[i]);
-    return 0;
     int sair = 0;
     int escolha;
     while (!sair){
         escolha = menu();
         switch (escolha){
             case 0:{
-                printf("vc saiu!");
+                printf("Finalizando...");
                 sair = 1;
                 break;
             }
@@ -191,6 +177,10 @@ int main(){
             }
             case 5:{
                 ordenarSecundaria();
+                break;
+            }
+            case 6:{
+                ordenarTodosSecundarios();
                 break;
             }
         }
