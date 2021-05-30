@@ -1,189 +1,105 @@
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 
-#define TAM 10
-typedef struct s{
-    int *lista;
-    int tamanho;
-    int qtdInseridos;
-} EstruturaSecundaria;
+#include "EstruturaVetores.h"
 
-EstruturaSecundaria estruturaPrimaria[TAM];
+int menu();
+
+void dobrar(int *x);
 
 int menu(){
-    int escolha;
-    printf("\nO que deseja?\n");
+    int op;
+    printf("Digite as opção desejada\n");
     printf("0 - Sair\n");
-    printf("1 - Inserir elemento em determinada estrutura\n");
-    printf("2 - Listar tamanho e elementos de todas estruturas\n");
-    printf("3 - Excluir elemento de determinada estrutura\n");
-    printf("4 - Aumentar tamanho de determinada estrutura\n");
-    printf("5 - Listar ordenadamente os elementos de determinada estrutura\n");
-    printf("6 - Listar ordenadamente todos os elementos de todas estruturas\n");
-    scanf("%d", &escolha);
-    return escolha;
-}
-
-int pegaValor() {
-    int info;
-    printf("Informe um valor : ");
-    scanf("%i", &info);
-    return info;
-}
-
-int pegaPosicao() {
-    int pos;
-    printf("Informe a posicao do vetor principal em que será inserido o valor: ");
-    scanf("%i", &pos);
-    return pos;
-}
-
-int validarPosicao(int posicao) {
-    if ((posicao>0) && (posicao<=TAM)) return 1;
-    return 0;
-}
-
-void criaEstruturaSecundaria(int posicao) {
-    int tamanho;
-    printf("Deseja criar estrutura secundaria com que tamanho?\n");
-    scanf("%d", &tamanho);
-    estruturaPrimaria[posicao].lista = (int*) malloc(tamanho*sizeof(int));
-    estruturaPrimaria[posicao].tamanho = tamanho;
-    estruturaPrimaria[posicao].qtdInseridos = 0;
-}
-
-void inserirElementos() {
-    int valor = pegaValor();
-    int posicao = pegaPosicao();
-    int qtdInseridos;
-    if(estruturaPrimaria[posicao].lista == NULL){
-        criaEstruturaSecundaria(posicao);
-    }
-    qtdInseridos = estruturaPrimaria[posicao].qtdInseridos;
-    estruturaPrimaria[posicao].lista[qtdInseridos] = valor;
-    estruturaPrimaria[posicao].qtdInseridos = qtdInseridos+1;
-}
-
-void listarTodasSecundarias() {
-    for(int i=0;i<TAM;i++){
-        int qtdInseridos = estruturaPrimaria[i].qtdInseridos;
-        int *listaAuxiliar = estruturaPrimaria[i].lista;
-        int tamanhoDaLista = estruturaPrimaria[i].tamanho;
-        printf("Na posicao %d temos %i elementos, sendo eles:", i, tamanhoDaLista);
-        for(int j=0;j<qtdInseridos;j++){
-            int elemento = listaAuxiliar[j];
-            if(elemento!=0){
-                printf("%i ", elemento);
-            }
-        }
-        printf("\n");
-    }
-}
-
-void removerElemento() {
-    int indicePrincipal;
-    int elementoASerRemovido;
-    printf("Qual índice do vetor principal deseja acessar?\n");
-    scanf("%d", &indicePrincipal);
-    printf("Qual elemento deseja remover?\n");
-    scanf("%d", &elementoASerRemovido);
-    int tamanhoDaAuxiliar = estruturaPrimaria[indicePrincipal].tamanho;
-    for(int i=0;i<tamanhoDaAuxiliar;i++){
-        int elementoAtual = estruturaPrimaria[indicePrincipal].lista[i];
-        if(elementoAtual==elementoASerRemovido){
-            estruturaPrimaria[indicePrincipal].lista[i] = 0;
-        }
-    }
-}
-
-void aumentarTamanhoDeSecundaria() {
-    int indicePrincipal;
-    int novoTamanho;
-    printf("Qual índice do vetor principal deseja aumentar?\n");
-    scanf("%d", &indicePrincipal);
-    printf("Qual o novo tamanho?\n");
-    scanf("%d", &novoTamanho);
-    estruturaPrimaria[indicePrincipal].lista = (int*) realloc(estruturaPrimaria[indicePrincipal].lista, novoTamanho*sizeof(int));
-    estruturaPrimaria[indicePrincipal].tamanho = novoTamanho;
-}
-
-int posicionaPivot(int *vetor, int inicio, int fim) {
-    //quicksort - Lomuto
-    //pegamos o primeiro elemento, mas podemos pegar a mediana para ser mais eficiente
-    int pivot = vetor[inicio];
-    int indiceASerTrocado = inicio;
-    for (int indiceASerAnalisado = inicio + 1; indiceASerAnalisado <= fim; indiceASerAnalisado++) {
-        if (vetor[indiceASerAnalisado] < pivot) {
-            indiceASerTrocado++;
-            int aux = vetor[indiceASerTrocado];
-            vetor[indiceASerTrocado] = vetor[indiceASerAnalisado];
-            vetor[indiceASerAnalisado] = aux;
-        }
-    }
-    vetor[inicio] = vetor[indiceASerTrocado];
-    vetor[indiceASerTrocado] = pivot;
-    return indiceASerTrocado;
-}
-
-void ordenaVetor(int *vetor, int inicio, int fim) {
-    if(inicio<fim){
-        int indicePivot = posicionaPivot(vetor, inicio, fim);
-        ordenaVetor(vetor, inicio, indicePivot);
-        ordenaVetor(vetor, indicePivot+1, fim);
-    }
-}
-
-void ordenarSecundaria() {
-    int indicePrimaria;
-    printf("Qual estrutura secundaria voce deseja ordenar?\n");
-    scanf("%d", &indicePrimaria);
-    ordenaVetor(estruturaPrimaria[indicePrimaria].lista, 0, estruturaPrimaria[indicePrimaria].tamanho);
-}
-
-void ordenarTodosSecundarios() {
-    for(int indicePrimario = 0; indicePrimario<TAM;indicePrimario++){
-        if(estruturaPrimaria[indicePrimario].lista !=NULL){
-            ordenaVetor(estruturaPrimaria[indicePrimario].lista, 0, estruturaPrimaria[indicePrimario].tamanho);
-        }
-    }
+    printf("1 - Inserir\n");
+    printf("2 - Excluir\n");
+    printf("3 - Listar uma estrutura\n");
+    printf("4 - Dobrar Numero\n");
+    printf("5 - \n");
+    scanf("%d", &op);
+    return op;
 }
 
 int main(){
+    inicializar();
+    int op;
     int sair = 0;
-    int escolha;
+    int ret;
     while (!sair){
-        escolha = menu();
-        switch (escolha){
+        op = menu();
+        switch (op){
             case 0:{
-                printf("Finalizando...");
-                sair = 1;
+                sair =1;
+                finalizar();
                 break;
             }
-            case 1:{
-                inserirElementos();
+            case 1:{ //inserir
+                ret = inserirNumeroEmEstrutura(25, 5);
+                if (ret == SUCESSO){
+                    printf("Inserido com sucesso");
+                }else if (ret == SEM_ESPACO){
+                    printf("Sem Espaço");
+                }else if (ret == SEM_ESTRUTURA_AUXILIAR){
+                    printf("Sem estrutura Auxiliar");
+                }
                 break;
             }
-            case 2:{
-                listarTodasSecundarias();
+
+            case 2:{ //excluir
                 break;
             }
-            case 3:{
-                removerElemento();
+
+            case 3:{ //recuperar dados estrutura auxiliar
+                int posicao, retorPrincipal;
+                printf("Qual a estrutura a ser listada (1..10)?");
+                scanf("%d", &posicao);
+
+                int qtd =  getQuantidadeElementosEstruturaAuxiliar(posicao);
+
+                if (qtd == POSICAO_INVALIDA){
+                    printf ("Posição inválida");
+                }else{ // existe elemento
+                    int vetorAux[qtd];
+
+                    retorPrincipal = getDadosEstruturaAuxiliar(posicao, vetorAux);
+
+                    if (retorPrincipal == SUCESSO){
+                        //imprimir para os dados para o usuário
+                        int i = 0;
+                        for (; i < qtd; i++){
+                            printf ("%d", vetorAux[i]);
+
+                        }
+                    }
+                }
                 break;
             }
-            case 4:{
-                aumentarTamanhoDeSecundaria();
+
+
+            case 10:{ //dobrar
+                //ler um numero
+                int valor;
+                scanf("%i", &valor);
+
+                dobrar(&valor);
+
+                //passar para um funcao (void dobrar(...)) que recebe o numero e dobra (EstruturaVetores.c)
+
+                printf("%i", valor);
+
                 break;
             }
-            case 5:{
-                ordenarSecundaria();
-                break;
+
+            default:{
+                printf("opcao inválida\n");
             }
-            case 6:{
-                ordenarTodosSecundarios();
-                break;
-            }
+
+
         }
+
+
     }
+
+    return 0;
 
 }
