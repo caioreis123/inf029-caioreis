@@ -136,7 +136,6 @@ void teste_q11() {
     printf("%d\n", q11(3, 4, 0)==12);
 }
 
-
 void q12(int comeco, int fim) {
     if(comeco>fim) return;
     printf("%d", comeco++);
@@ -146,6 +145,18 @@ void q12(int comeco, int fim) {
 
 void teste_q12() {
     q12(0, 3);
+}
+
+
+void q13(int comeco, int fim) {
+    if(fim<comeco) return;
+    printf("%d", fim--);
+    q13(comeco, fim);
+}
+
+
+void teste_q13() {
+    q13(0, 3);
 }
 
 int main() {
@@ -160,6 +171,7 @@ int main() {
 //    teste_q9();
 //    teste_q10();
 //    teste_q11();
-    teste_q12();
+//    teste_q12();
+    teste_q13();
     return 42;
 }
