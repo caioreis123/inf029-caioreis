@@ -145,6 +145,7 @@ void q12(int comeco, int fim) {
 
 void teste_q12() {
     q12(0, 3);
+    printf(" == 0123\n");
 }
 
 
@@ -154,24 +155,51 @@ void q13(int comeco, int fim) {
     q13(comeco, fim);
 }
 
-
 void teste_q13() {
     q13(0, 3);
+    printf(" == 3210\n");
+}
+
+void q14(int comeco, int fim) {
+    if(comeco>fim) return;
+    printf("%d", comeco++);
+    q14(++comeco, fim);
+}
+
+
+void teste_q14() {
+    q14(0, 6);
+    printf(" == 0246\n");
+}
+
+
+void q15(int comeco, int fim) {
+    if(fim<comeco) return;
+    printf("%d", fim--);
+    q15(comeco, --fim);
+}
+
+
+void teste_q15() {
+    q15(0, 6);
+    printf(" == 6420\n");
 }
 
 int main() {
-//    teste_q1();
-//    teste_q2();
-//    teste_q3();
-//    teste_q4();
-//    teste_q5();
-//    teste_q6();
-//    teste_q7();
-//    teste_q8();
-//    teste_q9();
-//    teste_q10();
-//    teste_q11();
-//    teste_q12();
+    teste_q1();
+    teste_q2();
+    teste_q3();
+    teste_q4();
+    teste_q5();
+    teste_q6();
+    teste_q7();
+    teste_q8();
+    teste_q9();
+    teste_q10();
+    teste_q11();
+    teste_q12();
     teste_q13();
+    teste_q14();
+    teste_q15();
     return 42;
 }
