@@ -91,6 +91,26 @@ void teste_q7() {
     printf("%d\n", teste);
 }
 
+int q8(int x, int y) {
+    if(y==0) return x;
+    q8(y, x%y);
+}
+
+void teste_q8() {
+    printf("%d\n", q8(10,5)==5);
+    printf("%d\n", q8(10,4)==2);
+}
+
+int q9(int n) {
+    if(n==1) return n;
+    return n+ q9(n-1);
+}
+
+void teste_q9() {
+    printf("%d\n", q9(5)==15);
+    printf("%d\n", q9(6)==21);
+}
+
 int main() {
 //    teste_q1();
 //    teste_q2();
@@ -98,6 +118,8 @@ int main() {
 //    teste_q4();
 //    teste_q5();
 //    teste_q6();
-    teste_q7();
+//    teste_q7();
+    teste_q8();
+    teste_q9();
     return 42;
 }
