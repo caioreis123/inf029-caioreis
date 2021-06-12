@@ -111,6 +111,19 @@ void teste_q9() {
     printf("%d\n", q9(6)==21);
 }
 
+int q10(int k, int n, int contador_de_aparicoes) {
+    int qtd_digitos = (int)log10(n)+1;
+    if(qtd_digitos==1) return contador_de_aparicoes;
+    int ultimo_digito = n%10;
+    if(ultimo_digito==k)contador_de_aparicoes++;
+    q10(k, n/10, contador_de_aparicoes);
+}
+
+
+void teste_q10() {
+    printf("%d\n", q10(2, 762021192, 0)==3);
+}
+
 int main() {
 //    teste_q1();
 //    teste_q2();
@@ -119,7 +132,8 @@ int main() {
 //    teste_q5();
 //    teste_q6();
 //    teste_q7();
-    teste_q8();
-    teste_q9();
+//    teste_q8();
+//    teste_q9();
+    teste_q10();
     return 42;
 }
