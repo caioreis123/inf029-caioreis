@@ -124,6 +124,18 @@ void teste_q10() {
     printf("%d\n", q10(2, 762021192, 0)==3);
 }
 
+int q11(int n1, int n2, int somatorio) {
+    if(n2==0) return somatorio;
+    somatorio +=n1;
+    q11(n1, --n2, somatorio);
+}
+
+
+void teste_q11() {
+    printf("%d\n", q11(2, 4, 0)==8);
+    printf("%d\n", q11(3, 4, 0)==12);
+}
+
 int main() {
 //    teste_q1();
 //    teste_q2();
@@ -134,6 +146,7 @@ int main() {
 //    teste_q7();
 //    teste_q8();
 //    teste_q9();
-    teste_q10();
+//    teste_q10();
+    teste_q11();
     return 42;
 }
