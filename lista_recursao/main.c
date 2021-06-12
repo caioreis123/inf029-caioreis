@@ -67,11 +67,22 @@ void teste_q5() {
     printf("%d\n", questao5(6)==21);
 }
 
+int questao6(int k, int n) {
+    if(n==1) return k;
+    return k * questao6(k, n-1);
+}
+
+void teste_q6() {
+    printf("%d\n", questao6(2,3)==8);
+    printf("%d\n", questao6(3,3)==27);
+}
+
 int main() {
 //    teste_q1();
 //    teste_q2();
 //    teste_q3();
 //    teste_q4();
-    teste_q5();
+//    teste_q5();
+    teste_q6();
     return 42;
 }
