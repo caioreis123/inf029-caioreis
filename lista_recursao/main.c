@@ -2,79 +2,93 @@
 #include <math.h>
 
 
-int questao1(int n) {
+int q1(int n) {
     if(n<3) return n;
-    return questao1(n-1)*n;
+    return q1(n-1)*n;
 }
 
 void teste_q1() {
-    printf("%d\n", questao1(1) == 1);
-    printf("%d\n", questao1(2) == 2);
-    printf("%d\n", questao1(4) == 24);
-    printf("%d\n", questao1(5) == 120);
+    printf("%d\n", q1(1) == 1);
+    printf("%d\n", q1(2) == 2);
+    printf("%d\n", q1(4) == 24);
+    printf("%d\n", q1(5) == 120);
 }
 
 
-int questao2(int n) {
+int q2(int n) {
     if(n==1) return 0;
     if(n<4) return 1;
-    return questao2(n-1)+ questao2(n-2);
+    return q2(n-1)+ q2(n-2);
 }
 
 
 void teste_q2() {
-    printf("%d\n", questao2(1) == 0);
-    printf("%d\n", questao2(2) == 1);
-    printf("%d\n", questao2(3) == 1);
-    printf("%d\n", questao2(4) == 2);
-    printf("%d\n", questao2(5) == 3);
-    printf("%d\n", questao2(12) == 89);
+    printf("%d\n", q2(1) == 0);
+    printf("%d\n", q2(2) == 1);
+    printf("%d\n", q2(3) == 1);
+    printf("%d\n", q2(4) == 2);
+    printf("%d\n", q2(5) == 3);
+    printf("%d\n", q2(12) == 89);
 }
 
-double questao3(int n) {
+double q3(int n) {
     if(!n) return 0;
     int ultimo_digito = n%10;
     int qtd_digitos_menos1 = (int)log10(n);
     double futuro_primeiro_numero= pow(10, qtd_digitos_menos1) * ultimo_digito;
     int primeiros_digitos_sem_o_ultimo = n / 10;
-    double invertido = futuro_primeiro_numero + questao3(primeiros_digitos_sem_o_ultimo);
+    double invertido = futuro_primeiro_numero + q3(primeiros_digitos_sem_o_ultimo);
     return invertido;
 }
 
 void teste_q3() {
-    printf("%d\n", questao3(123)==321);
+    printf("%d\n", q3(123)==321);
 }
 
 
 
-int questao4(int vetor[], int tam) {
+int q4(int vetor[], int tam) {
     if(tam==0) return 0;
-    return vetor[--tam] + questao4(vetor, tam);
+    return vetor[--tam] + q4(vetor, tam);
 }
 
 void teste_q4() {
     int vetor[3] = {1,2,5};
-    printf("%d\n", questao4(vetor, 3)==8);
+    printf("%d\n", q4(vetor, 3)==8);
 }
 
-int questao5(int n) {
+int q5(int n) {
     if(n==1) return n;
-    return n+ questao5(n-1);
+    return n+ q5(n-1);
 }
 
 void teste_q5() {
-    printf("%d\n", questao5(5)==15);
-    printf("%d\n", questao5(6)==21);
+    printf("%d\n", q5(5)==15);
+    printf("%d\n", q5(6)==21);
 }
 
-int questao6(int k, int n) {
+int q6(int k, int n) {
     if(n==1) return k;
-    return k * questao6(k, n-1);
+    return k * q6(k, n-1);
 }
 
 void teste_q6() {
-    printf("%d\n", questao6(2,3)==8);
-    printf("%d\n", questao6(3,3)==27);
+    printf("%d\n", q6(2,3)==8);
+    printf("%d\n", q6(3,3)==27);
+}
+void q7(int vetor[], int primeiro_indice, int ultimo_indice) {
+    if(ultimo_indice<=primeiro_indice) return;
+    int aux = vetor[ultimo_indice];
+    vetor[ultimo_indice] = vetor[primeiro_indice];
+    vetor[primeiro_indice] = aux;
+    q7(vetor, primeiro_indice+1, ultimo_indice-1);
+}
+
+void teste_q7() {
+    int vetor[4] = {1,2,3,4};
+    q7(vetor, 0, 3);
+    int teste = vetor[0]==4 && vetor[1]==3 && vetor[2]==2 && vetor[3]==1;
+    printf("%d\n", teste);
 }
 
 int main() {
@@ -83,6 +97,7 @@ int main() {
 //    teste_q3();
 //    teste_q4();
 //    teste_q5();
-    teste_q6();
+//    teste_q6();
+    teste_q7();
     return 42;
 }
